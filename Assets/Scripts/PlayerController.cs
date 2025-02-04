@@ -33,5 +33,12 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = movement * speed;
+        // 프레임 관련 처리 없어도 괜찮은건가?
     }
+
+    /**
+    * shift 입력시 기존 속도보다 느려지고 피격점 보이도록 추가 필요
+    * 아마 Player에도 피격 포인트 component로 추가해야할듯
+    */
+
 }

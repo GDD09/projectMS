@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonHighlighter : MonoBehaviour
 {
+    // 정식 타이틀 만들때 완전 수정
     public Button[] buttons;
     public Color highlightColor = Color.white;
     private Color defaultColor;
