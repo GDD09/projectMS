@@ -4,41 +4,52 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Speed of the player. [unit/second]
-    public float speed = 10.0f;
+    public float speed = 5.0f;
+
+    // Slower speed of the player. [unit/second]
+    public float slowSpeed = 2.5f;
 
     // Lock the player movement?
     public bool locked = false;
 
+
     private Vector2 movement;
     private Rigidbody2D rb;
+    private GameObject hitPoint;
+
+    private bool isSlowMode = false;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        hitPoint = transform.Find("HitPoint").gameObject;
     }
 
     void Update()
     {
         if (locked)
         {
+            isSlowMode = false;
             movement = Vector2.zero;
         }
         else
         {
+            isSlowMode = Input.GetButton("SlowMode");
             movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             movement = movement.normalized;
+        }
+
+        if (hitPoint != null)
+        {
+            hitPoint.SetActive(isSlowMode);
         }
     }
 
     void FixedUpdate()
     {
-        rb.linearVelocity = movement * speed;
-        // 프레임 관련 처리 없어도 괜찮은건가?
+        // RigidBody의 속도값을 직접 조작. 추가적인 DeltaTime 처리는 필요하지 않다.
+        var currentSpeed = isSlowMode ? slowSpeed : speed;
+        rb.linearVelocity = movement * currentSpeed;
     }
-
-    /**
-    * shift 입력시 기존 속도보다 느려지고 피격점 보이도록 추가 필요
-    * 아마 Player에도 피격 포인트 component로 추가해야할듯
-    */
-
 }
