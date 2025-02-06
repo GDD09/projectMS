@@ -17,7 +17,7 @@ public class LinearMove : MonoBehaviour
 
     void Update()
     {
-        var mainAngle = transform.eulerAngles.z;
+        var mainAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 direction = new Vector2(Mathf.Cos(mainAngle + angle), Mathf.Sin(mainAngle + angle));
         transform.position += (Vector3) direction * speed * Time.deltaTime;
     }

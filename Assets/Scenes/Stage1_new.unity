@@ -199,9 +199,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 66816324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76826c236f8e47e439e89f7e2851f841, type: 3}
+  m_Script: {fileID: 11500000, guid: 170315e1a010540c1889b520146d5569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  isOpposite: 0
 --- !u!212 &66816327
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -300,9 +302,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 196720781}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76826c236f8e47e439e89f7e2851f841, type: 3}
+  m_Script: {fileID: 11500000, guid: 170315e1a010540c1889b520146d5569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 4
+  isOpposite: 0
 --- !u!212 &196720784
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1409,9 +1413,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1353612457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76826c236f8e47e439e89f7e2851f841, type: 3}
+  m_Script: {fileID: 11500000, guid: 170315e1a010540c1889b520146d5569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1
+  isOpposite: 0
 --- !u!1 &1358382350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1548,9 +1554,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1609164764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76826c236f8e47e439e89f7e2851f841, type: 3}
+  m_Script: {fileID: 11500000, guid: 170315e1a010540c1889b520146d5569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 7
+  isOpposite: 0
 --- !u!212 &1609164767
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1897,9 +1905,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978121960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76826c236f8e47e439e89f7e2851f841, type: 3}
+  m_Script: {fileID: 11500000, guid: 170315e1a010540c1889b520146d5569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 2
+  isOpposite: 0
 --- !u!212 &1978121963
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2094,7 +2104,7 @@ MonoBehaviour:
   bulletCount: 10
   radius: 1
   armDelay: 3
-  fireDelay: 0.05
+  fireDelay: 0
   elapsedTime: 0
 --- !u!114 &4327751883689353074
 MonoBehaviour:
@@ -2105,9 +2115,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5175304969527386433}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00950a4b5f3f6b1469d08092e5277e6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f799317723da4f5badf2183ee9e9598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHP: 100
+  currentHP: 100
+  maxSP: 100
+  currentSP: 0
 --- !u!50 &4735950237034845983
 Rigidbody2D:
   serializedVersion: 5
@@ -2145,9 +2159,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7643415910541612471}
   - component: {fileID: 4327751883689353074}
-  - component: {fileID: 4735950237034845983}
-  - component: {fileID: 8676412404567098915}
   - component: {fileID: 8676412404567098916}
+  - component: {fileID: 4735950237034845983}
+  - component: {fileID: 8676412404567098917}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2171,8 +2185,22 @@ Transform:
   - {fileID: 1437546158}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &8676412404567098915
-BoxCollider2D:
+--- !u!114 &8676412404567098916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5175304969527386433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e46cb0d9db74aa29ae252790e6ef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  locked: 0
+--- !u!58 &8676412404567098917
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2205,32 +2233,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.001856327, y: -0.022227183}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 0.5}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.44188976, y: 0.21222171}
-  m_EdgeRadius: 0
---- !u!114 &8676412404567098916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5175304969527386433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e46cb0d9db74aa29ae252790e6ef62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  locked: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.07
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
