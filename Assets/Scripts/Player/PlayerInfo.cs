@@ -5,14 +5,34 @@ public class PlayerInfo : MonoBehaviour
     public int maxHP = 100;
     public int currentHP = 100;
 
+    [Space]
     public int maxSP = 100;
-    public int currentSP = 0;
+    public float currentSP = 0;
+
+    [Space]
+    public float damageInvincibleTime = 3f;
+    public bool isInvincible = false;
+    private float invincibleTimer = 3f;
+
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        // 초기 상태 설정 (필요하면 이후에 수정 가능)
-        currentHP = maxHP;
-        currentSP = 0;
+        spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+    }
+
+    void Update()
+    {
+        if (isInvincible)
+        {
+            invincibleTimer -= Time.deltaTime;
+            if (invincibleTimer <= 0) {
+                spriteRenderer.color = new Color(1, 1, 1, 1);
+                isInvincible = false;
+            } else if (spriteRenderer) {
+                spriteRenderer.color = new Color(1, 1, 1, Mathf.PingPong(Time.time * 10, 1));
+            }
+        }
     }
 
     // HP 회복 메서드
@@ -27,9 +47,23 @@ public class PlayerInfo : MonoBehaviour
         currentSP = Mathf.Min(currentSP + amount, maxSP);
     }
 
-    // 테스트용: HP와 SP 정보 출력
-    public void PrintStatus()
+    public void DealDamage(int amount)
     {
-        Debug.Log($"Player HP: {currentHP}/{maxHP}, SP: {currentSP}/{maxSP}");
+        currentHP = Mathf.Max(currentHP - amount, 0);
+
+        if (currentHP <= 0)
+        {
+            Kill();
+            return;
+        }
+
+        isInvincible = true;
+        invincibleTimer = damageInvincibleTime;
+    }
+
+    public void Kill()
+    {
+        currentHP = 0;
+        gameObject.SetActive(false);  // TODO
     }
 }

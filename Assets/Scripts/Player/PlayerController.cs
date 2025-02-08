@@ -40,10 +40,7 @@ public class PlayerController : MonoBehaviour
             movement = movement.normalized;
         }
 
-        if (hitPoint != null)
-        {
-            hitPoint.SetActive(isSlowMode);
-        }
+        hitPoint?.SetActive(isSlowMode);
     }
 
     void FixedUpdate()
