@@ -1,42 +1,47 @@
 using UnityEngine;
 
+/*
+이게 로직 자체는 정상적으로 넣은 것 같은데
+충돌판정이 계속 Player 자체로 판정을 진행함
+
+의도는 Player안에 HitPoint 오브젝트 기준으로 피격판정, graze판정, 스킬판정을 주고싶음
+
+프리팹은 변경사항 크게 없으니 스테이지에 올려놓은 객체 위주로 확인해볼것것
+*/
+
 public class HitPointTrigger : MonoBehaviour
 {
-    /**
-    * hitpoint 기준으로 피격 및 graze 되도록 설정해야함
-    * 이 상태가 Player 기준으로 피격되는 상태
-    * 아마 rigidbody를 Player가 아닌 Hitpoint로 옮겨야 할듯?
-    **/
-
-
     private PlayerInfo playerInfo;
+    private float lastGrazeTime;
+    public float grazeCooldown = 0.1f; // Graze 간격 조절
 
     void Start()
     {
-        playerInfo = GetComponentInParent<PlayerInfo>(); // 부모(Player)에서 PlayerInfo 가져오기
+        playerInfo = GetComponentInParent<PlayerInfo>();
 
         if (playerInfo == null)
         {
-            Debug.LogError("PlayerInfo를 찾을 수 없습니다!");
+            Debug.LogError("[HitPointTrigger] PlayerInfo를 찾을 수 없습니다! HitPoint가 Player의 자식인지 확인하세요.");
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log($"[HitPointTrigger] 충돌 감지: {collision.gameObject.name}");
+
         Bullet bullet = collision.GetComponent<Bullet>();
 
-        if (bullet != null && !bullet.isPlayerBullet) // 🔹 적 탄막만 감지
+        if (bullet != null && !bullet.isPlayerBullet)
         {
-            playerInfo.currentHP--; // HP 감소
-            Debug.Log($"플레이어 피격! 현재 HP: {playerInfo.currentHP}/{playerInfo.maxHP}");
+            Debug.Log("[HitPointTrigger] 적 탄막 충돌 감지!");
 
-            if (playerInfo.currentHP <= 0)
+            if (playerInfo != null && !playerInfo.isInvincible)
             {
-                Debug.Log("플레이어 사망!");
-                Destroy(playerInfo.gameObject); // Player 오브젝트 삭제
+                playerInfo.DealDamage(1);
+                Debug.Log($"[HitPointTrigger] 플레이어 피격! 현재 HP: {playerInfo.currentHP}/{playerInfo.maxHP}");
             }
 
-            Destroy(collision.gameObject); // 탄막 제거
+            Destroy(collision.gameObject);
         }
     }
 
@@ -44,10 +49,15 @@ public class HitPointTrigger : MonoBehaviour
     {
         Bullet bullet = collision.GetComponent<Bullet>();
 
-        if (bullet != null && !bullet.isPlayerBullet) // 🔹 적 탄막만 Graze 처리
+        if (bullet != null && !bullet.isPlayerBullet)
         {
-            playerInfo.GainSP(1); // SP 회복
-            Debug.Log($"Graze 발생! 현재 SP: {playerInfo.currentSP}/{playerInfo.maxSP}");
+            if (Time.time - lastGrazeTime >= grazeCooldown)
+            {
+                Debug.Log("[HitPointTrigger] Graze 발생!");
+
+                playerInfo.GainSP(1);
+                lastGrazeTime = Time.time;
+            }
         }
     }
 }

@@ -34,11 +34,14 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 몹 탄환이 Skill 범위에 닿으면 플레이어 탄환으로 전환
+        // 아직 구현 x
+        /*
         if (!isPlayerBullet && collision.CompareTag("SkillRange"))
         {
             isPlayerBullet = true;
             UpdateBulletColor();
         }
+        */
     }
 
     void Update()
