@@ -7,8 +7,9 @@ public class PlayerInfo : MonoBehaviour
     public int currentHP = 100;
 
     [Space]
-    public int maxSP = 100;
+    public float maxSP = 100;
     public float currentSP = 0;
+    public float skillSP = 25;
 
     [Space]
     public float damageInvincibleTime = 3f;
@@ -27,21 +28,41 @@ public class PlayerInfo : MonoBehaviour
         if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;
-            if (invincibleTimer <= 0) {
+            if (invincibleTimer <= 0)
+            {
                 spriteRenderer.color = new Color(1, 1, 1, 1);
                 isInvincible = false;
-            } else if (spriteRenderer) {
+            }
+            else if (spriteRenderer)
+            {
                 spriteRenderer.color = new Color(1, 1, 1, Mathf.PingPong(Time.time * 10, 1));
             }
         }
     }
+
+
+    public void OnBulletHit(int damage)
+    {
+        DealDamage(damage);
+    }
+
+    public void OnGrazing(float deltaTime)
+    {
+        GainSP(deltaTime * 10f);
+    }
+
+    public bool CanUseSkill()
+    {
+        return currentSP >= skillSP;
+    }
+
 
     public void Heal(int amount)
     {
         currentHP = Mathf.Min(currentHP + amount, maxHP);
     }
 
-    public void GainSP(int amount)
+    public void GainSP(float amount)
     {
         currentSP = Mathf.Min(currentSP + amount, maxSP);
     }
@@ -51,7 +72,7 @@ public class PlayerInfo : MonoBehaviour
         if (isInvincible)
         {
             Debug.Log("[PlayerInfo] 무적 상태로 인해 피격되지 않음"); // ✅ 디버깅 추가
-            return; 
+            return;
         }
 
         currentHP = Mathf.Max(currentHP - amount, 0);
@@ -69,6 +90,13 @@ public class PlayerInfo : MonoBehaviour
         StartCoroutine(InvincibilityFlash());
     }
 
+    public void Kill()
+    {
+        currentHP = 0;
+        gameObject.SetActive(false); // TODO
+    }
+
+
     // 무적 상태 시 스프라이트 점멸 효과
     private IEnumerator InvincibilityFlash()
     {
@@ -81,9 +109,4 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    public void Kill()
-    {
-        currentHP = 0;
-        gameObject.SetActive(false); // TODO
-    }
 }

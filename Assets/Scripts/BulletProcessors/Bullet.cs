@@ -10,38 +10,15 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public bool isPlayerBullet = false; // 초기 상태는 몹 탄환
+    public int damage = 10;
+
     private SpriteRenderer spriteRenderer;
     private float boundary = 10.0f; // 화면 경계 (카메라 밖 멀리)
 
-    // 당장은 red blue로 진행하고 나중에 스프라이트 이름에 맞게 수정
-    // public Color mobBulletColor = Color.red;
-    // public Color playerBulletColor = Color.blue;
-
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateBulletColor();
-    }
-
-    private void UpdateBulletColor()
-    {
-        if (spriteRenderer != null)
-        {
-            // spriteRenderer.color = isPlayerBullet ? playerBulletColor : mobBulletColor;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // 몹 탄환이 Skill 범위에 닿으면 플레이어 탄환으로 전환
-        // 아직 구현 x
-        /*
-        if (!isPlayerBullet && collision.CompareTag("SkillRange"))
-        {
-            isPlayerBullet = true;
-            UpdateBulletColor();
-        }
-        */
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        transform.position = new Vector3(transform.position.x, transform.position.y, -5);
     }
 
     void Update()
@@ -51,5 +28,30 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    void MakePlayerBullet()
+    {
+        isPlayerBullet = true;
+        spriteRenderer.color = Color.blue;  // TODO
+    }
+
+    public void ReflectFromPlayer(Transform playerTransform)
+    {
+        if (isPlayerBullet) { return; }
+        MakePlayerBullet();
+
+        // 방향 반사 처리
+        Vector3 playerPos = playerTransform.position;
+        Vector3 bulletPos = transform.position;
+        Vector3 reflectDir = (playerPos - bulletPos).normalized * -1;
+        float angle = Mathf.Atan2(reflectDir.y, reflectDir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void Hit()
+    {
+        // 피격 처리
+        Destroy(gameObject);
     }
 }

@@ -1,35 +1,31 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-// [RequireComponent(typeof(Rigidbody2D))]
-// Rigbody 옮김
 public class PlayerController : MonoBehaviour
 {
-    // Speed of the player. [unit/second]
+    [Tooltip("플레이어의 이동 속도. [unit/second]")]
     public float speed = 5.0f;
 
-    // Slower speed of the player. [unit/second]
+    [Tooltip("슬로우모드 시의 이동 속도. [unit/second]")]
     public float slowSpeed = 2.5f;
 
-    // Lock the player movement?
+    [Tooltip("플레이어의 이동을 잠근다.")]
     public bool locked = false;
-    
 
 
+    private GameObject hitPointSprite;
+    private PlayerInfo playerInfo;
     private Vector2 movement;
-    private GameObject hitPoint;
-
-
     private bool isSlowMode = false;
 
 
     void Start()
     {
-        hitPoint = transform.Find("HitPoint").gameObject;
+        hitPointSprite = transform.Find("HitPointSprite").gameObject;
+        Debug.Assert(hitPointSprite != null, "HitPointSprite 오브젝트가 있어야 합니다!");
 
-        if (hitPoint != null)
-        {
-            Debug.LogError("HitPoint 오브젝트를 찾을 수 없습니다!");
-        }
+        playerInfo = GetComponent<PlayerInfo>();
+        Debug.Assert(playerInfo != null, "PlayerInfo 컴포넌트가 있어야 합니다!");
     }
 
     void Update()
@@ -39,32 +35,33 @@ public class PlayerController : MonoBehaviour
             isSlowMode = false;
             movement = Vector2.zero;
         }
-        else
-        {
-            isSlowMode = Input.GetButton("SlowMode");
-            movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            movement = movement.normalized;
-        }
 
-        if (hitPoint != null)
-        {
-            // 🔹 HitPoint는 항상 활성화 (충돌 감지 유지), 대신 Sprite만 활성화/비활성화
-            hitPoint.GetComponent<SpriteRenderer>().enabled = isSlowMode;
-        }
+        hitPointSprite?.SetActive(isSlowMode);
+
+        float currentSpeed = isSlowMode ? slowSpeed : speed;
+        Vector2 currentMovement = movement * currentSpeed * Time.deltaTime;
+        transform.Translate(currentMovement);
     }
 
-    void FixedUpdate()
-    {
-        // RigidBody의 속도값을 직접 조작. 추가적인 DeltaTime 처리는 필요하지 않다.
-        var currentSpeed = isSlowMode ? slowSpeed : speed;
-        // rb HitPoint로 옮겨서 직접 transform으로 계산
-        // rb.linearVelocity = movement * currentSpeed;
-        transform.position += (Vector3)(movement * currentSpeed * Time.fixedDeltaTime);
-        
 
-        if (hitPoint != null)
+    // PlayerInput 컴포넌트에서 호출되는 이벤트 핸들러
+    void OnMove(InputValue value)
+    {
+        movement = value.Get<Vector2>().normalized;
+    }
+
+    void OnSlowMode(InputValue value)
+    {
+        isSlowMode = value.isPressed;
+    }
+
+    void OnUseSkill()
+    {
+        if (locked) { return; }
+        if (playerInfo.CanUseSkill())
         {
-            hitPoint.transform.position = transform.position;
+            playerInfo.GainSP(-playerInfo.skillSP);
+            BroadcastMessage("UseSkill");  // TODO: 이게 과연 최선일까?
         }
     }
 }
