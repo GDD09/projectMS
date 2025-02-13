@@ -19,6 +19,11 @@ public class LinearMove : MonoBehaviour
     {
         var mainAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 direction = new Vector2(Mathf.Cos(mainAngle + angle), Mathf.Sin(mainAngle + angle));
-        transform.position += (Vector3) direction * speed * Time.deltaTime;
+        transform.position += (Vector3)direction * speed * Time.deltaTime;
+    }
+
+    void MultiplyBulletSpeed(float mul)
+    {
+        speed *= mul;
     }
 }
