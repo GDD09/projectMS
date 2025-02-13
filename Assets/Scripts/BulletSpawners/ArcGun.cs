@@ -9,13 +9,13 @@ public class ArcGun : GunBase
     [Space]
     public int bulletCount = 20;
     public float bulletInterval = 0.03f;
-    public float radius = 0.5f;
-    public float startAngleDeg = 0f;
+    public float radius = 0f;
     public float arcSizeDeg = 60f;
 
 
     public override void FireBullets()
     {
+        if (!isActiveAndEnabled) { return; }
         StartCoroutine(FireBulletsCoroutine());
     }
 
@@ -23,10 +23,13 @@ public class ArcGun : GunBase
     {
         for (int i = 0; i < bulletCount; i++)
         {
+            float rot = transform.eulerAngles.z * Mathf.Deg2Rad;
             float t = (float)i / bulletCount;
-            float x = Mathf.Cos(2f * Mathf.PI * t) * radius;
-            float y = Mathf.Sin(2f * Mathf.PI * t) * radius;
-            float angle = startAngleDeg + arcSizeDeg * t;
+            float x0 = Mathf.Cos(2f * Mathf.PI * t + rot);
+            float y0 = Mathf.Sin(2f * Mathf.PI * t + rot);
+
+            float angleOffset = -arcSizeDeg * bulletCount / 2f;
+            float angle = arcSizeDeg * t + angleOffset;
 
             SpawnBullet(transform.position + new Vector3(x, y, 0.0f), angle);
 

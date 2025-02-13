@@ -14,6 +14,8 @@ public class LinearGun : GunBase
 
     public override void FireBullets()
     {
+        if (!isActiveAndEnabled) { return; }
+
         if (lockOn)
         {
             StartCoroutine(FireBulletsLockOn(Game.PlayerObject.transform.position - transform.position));

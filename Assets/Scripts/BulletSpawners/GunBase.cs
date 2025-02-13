@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public abstract class GunBase : MonoBehaviour
 {
+    [Required]
     public GameObject bulletPrefab;
 
     public virtual void FireBullets()

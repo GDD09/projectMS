@@ -8,19 +8,21 @@ public class SphereGun : GunBase
 {
     [Space]
     public int bulletCount = 60;
-    public float radius = 0.5f;
+    public float radius = 0f;
 
 
     public override void FireBullets()
     {
+        if (!isActiveAndEnabled) { return; }
+
         for (int i = 0; i < bulletCount; i++)
         {
             float t = (float)i / bulletCount;
             float x = Mathf.Cos(2f * Mathf.PI * t) * radius;
             float y = Mathf.Sin(2f * Mathf.PI * t) * radius;
-            float angleDeg = t * 360.0f;
+            Vector2 direction = new(Mathf.Cos(2f * Mathf.PI * t), Mathf.Sin(2f * Mathf.PI * t));
 
-            SpawnBullet(transform.position + new Vector3(x, y, 0.0f), angleDeg);
+            SpawnBullet(transform.position + new Vector3(x, y, 0.0f), direction);
         }
     }
 }
