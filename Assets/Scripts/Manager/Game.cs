@@ -16,6 +16,7 @@ public static class Game
         mainCamera = null;
         playerObject = null;
         playerInfo = null;
+        PlayArea = new();
     }
 
 
@@ -60,5 +61,23 @@ public static class Game
 
             return playerInfo;
         }
+    }
+
+    public static Rect PlayArea { get; private set; } = new();
+    public static Rect BulletArea { get; private set; } = new();
+    public static void SetPlayArea(Rect playArea, Rect bulletArea)
+    {
+        PlayArea = playArea;
+        BulletArea = bulletArea;
+    }
+
+    public static bool IsInPlayArea(Transform transform)
+    {
+        return PlayArea.Contains(transform.position);
+    }
+
+    public static bool IsInBulletArea(Transform transform)
+    {
+        return BulletArea.Contains(transform.position);
     }
 }

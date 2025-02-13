@@ -36,11 +36,21 @@ public class PlayerController : MonoBehaviour
             movement = Vector2.zero;
         }
 
+        // 슬로우모드 시 HitPointSprite를 활성화한다.
         hitPointSprite?.SetActive(isSlowMode);
 
+        // 플레이어 이동
         float currentSpeed = isSlowMode ? slowSpeed : speed;
         Vector2 currentMovement = movement * currentSpeed * Time.deltaTime;
         transform.Translate(currentMovement);
+
+        // 플레이어가 화면 밖으로 나가지 않도록 제한
+        Rect playArea = Game.PlayArea;
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, playArea.xMin, playArea.xMax),
+            Mathf.Clamp(transform.position.y, playArea.yMin, playArea.yMax),
+            transform.position.z
+        );
     }
 
 

@@ -13,7 +13,6 @@ public class Bullet : MonoBehaviour
     public int damage = 10;
 
     private SpriteRenderer spriteRenderer;
-    private float boundary = 10.0f; // 화면 경계 (카메라 밖 멀리)
 
     void Start()
     {
@@ -23,8 +22,8 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        // 화면을 벗어나면 직접 삭제
-        if (Mathf.Abs(transform.position.x) > boundary || Mathf.Abs(transform.position.y) > boundary)
+        // BulletArea를 벗어나면 직접 삭제
+        if (!Game.IsInBulletArea(transform))
         {
             Destroy(gameObject);
         }
@@ -47,6 +46,9 @@ public class Bullet : MonoBehaviour
         Vector3 reflectDir = (playerPos - bulletPos).normalized * -1;
         float angle = Mathf.Atan2(reflectDir.y, reflectDir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        // 속도 좀 더 빠르게
+        SendMessage("MultiplyBulletSpeed", 1.5f);
     }
 
     public void Hit()
