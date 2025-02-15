@@ -14,16 +14,18 @@ public class TimedTriggerer : MonoBehaviour
     [HideIf("infinite")]
     public int repeatCount = 1;
 
-    private float timer = 0.0f;
+    [Space]
+    public float elapsedTime = 0.0f;
+
     private int counter = 0;
 
     void Update()
     {
-        timer += Time.deltaTime;
+        elapsedTime += Time.deltaTime;
 
-        if (timer >= interval)
+        if (elapsedTime >= interval)
         {
-            timer %= interval;
+            elapsedTime %= interval;
             counter++;
 
             SendMessage("FireBullets");
@@ -37,7 +39,7 @@ public class TimedTriggerer : MonoBehaviour
 
     void OnEnable()
     {
-        timer = 0.0f;
+        elapsedTime = 0.0f;
         counter = 0;
     }
 }

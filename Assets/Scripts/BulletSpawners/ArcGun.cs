@@ -7,9 +7,14 @@ using UnityEngine;
 public class ArcGun : GunBase
 {
     [Space]
+    [Min(1)]
     public int bulletCount = 20;
+
+    [Min(0)]
     public float bulletInterval = 0.03f;
     public float radius = 0f;
+
+    [Range(0, 360)]
     public float arcSizeDeg = 60f;
 
 
@@ -23,15 +28,14 @@ public class ArcGun : GunBase
     {
         for (int i = 0; i < bulletCount; i++)
         {
-            float rot = transform.eulerAngles.z * Mathf.Deg2Rad;
             float t = (float)i / bulletCount;
-            float x0 = Mathf.Cos(2f * Mathf.PI * t + rot);
-            float y0 = Mathf.Sin(2f * Mathf.PI * t + rot);
+            float rot = transform.eulerAngles.z * Mathf.Deg2Rad;
+            float maxRad = arcSizeDeg * Mathf.Deg2Rad;
+            float rotOffset = -maxRad / 2f;
+            float x0 = Mathf.Cos(maxRad * t + rot + rotOffset);
+            float y0 = Mathf.Sin(maxRad * t + rot + rotOffset);
 
-            float angleOffset = -arcSizeDeg * bulletCount / 2f;
-            float angle = arcSizeDeg * t + angleOffset;
-
-            SpawnBullet(transform.position + new Vector3(x, y, 0.0f), angle);
+            SpawnBullet(transform.position + new Vector3(x0 * radius, y0 * radius, 0.0f), new Vector2(x0, y0));
 
             if (bulletInterval > 0f)
             {

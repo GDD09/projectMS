@@ -1,4 +1,5 @@
 using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 
 /// <summary>
@@ -7,10 +8,19 @@ using UnityEngine;
 public class LinearGun : GunBase
 {
     [Space]
+    [Min(1)]
     public int bulletCount = 1;
+
+    [HideIf("IsSingleBullet")]
+    [Min(1f / 60f)]
     public float bulletInterval = 0.1f;
+
+    [Range(-180, 180)]
     public float angleOffset = 0f;
+
+    [HideIf("IsSingleBullet")]
     public bool lockOn = false;
+
 
     public override void FireBullets()
     {
@@ -25,6 +35,8 @@ public class LinearGun : GunBase
             StartCoroutine(FireBulletsCoroutine());
         }
     }
+
+    private bool IsSingleBullet() => bulletCount == 1;
 
     private IEnumerator FireBulletsCoroutine()
     {

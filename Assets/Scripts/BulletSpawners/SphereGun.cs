@@ -7,6 +7,7 @@ using UnityEngine;
 public class SphereGun : GunBase
 {
     [Space]
+    [Min(1)]
     public int bulletCount = 60;
     public float radius = 0f;
 
