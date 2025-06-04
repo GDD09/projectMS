@@ -18,6 +18,8 @@ public class PlayerInfo : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    public GameOverManager gameOverManager;
+
     void Start()
     {
         spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
@@ -93,7 +95,20 @@ public class PlayerInfo : MonoBehaviour
     public void Kill()
     {
         currentHP = 0;
-        gameObject.SetActive(false); // TODO
+        gameObject.SetActive(false); 
+        // TODO
+        /*
+         gameOverManager에 게임 오버 이벤트 생성 
+        */
+
+        if (gameOverManager != null)
+        {
+            gameOverManager.TriggerGameOver();
+        }
+        else
+        {
+            Debug.LogWarning("GameOverManager가 연결되어 있지 않습니다!");
+        }
     }
 
 

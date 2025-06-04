@@ -103,7 +103,7 @@
                     "name": "",
                     "id": "94d006a9-472e-4bd7-9f2a-051df0263e86",
                     "path": "<Keyboard>/z",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Menu Select",
