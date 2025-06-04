@@ -80,4 +80,19 @@ public static class Game
     {
         return BulletArea.Contains(transform.position);
     }
+
+    public static void GameOver()
+    {
+        GameOverManager gameOverManager = Object.FindObjectOfType<GameOverManager>();
+
+        if (gameOverManager != null)
+        {
+            Debug.Log("[Game] GameOver 호출됨 → GameOverManager.TriggerGameOver() 실행");
+            gameOverManager.TriggerGameOver();
+        }
+        else
+        {
+            Debug.LogWarning("[Game] GameOverManager 를 찾을 수 없습니다!");
+        }
+    }
 }
