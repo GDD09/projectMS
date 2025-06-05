@@ -4005,7 +4005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1750682667}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 454.4579, y: 282.729, z: -1.6136233}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4826,7 +4826,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1750682668}
         m_TargetAssemblyTypeName: GameOverManager, Assembly-CSharp
         m_MethodName: ExitToTitle
         m_Mode: 1
@@ -5354,7 +5354,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1750682668}
         m_TargetAssemblyTypeName: GameOverManager, Assembly-CSharp
         m_MethodName: Restart
         m_Mode: 1
@@ -5737,5 +5737,5 @@ SceneRoots:
   - {fileID: 273725610}
   - {fileID: 1967998216}
   - {fileID: 1137333042}
-  - {fileID: 854120579}
   - {fileID: 1750682669}
+  - {fileID: 854120579}
